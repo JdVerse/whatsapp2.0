@@ -96,7 +96,7 @@ const Header = styled.div`
   padding: 15px;
   height: 80px;
   border-bottom: 1px solid whitesmoke;
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     display:flex;
     justify-content:center;
   }
@@ -107,7 +107,7 @@ const UserAvatar = styled(Avatar)`
   }
 `;
 const IconsContainer = styled.div`
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     display:none;
   }
 `;

@@ -137,7 +137,7 @@ export default ChatScreen;
 const Container = styled.div``;
 const Mybutton = styled.button``;
 const Back = styled.div`
-  @media (min-width: 400px) {
+  @media (min-width: 500px) {
     display:none;
   }
 position:absolute;
