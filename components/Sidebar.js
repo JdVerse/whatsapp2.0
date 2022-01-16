@@ -46,14 +46,6 @@ function Sidebar() {
               {user.email.split("@gmail.com")}
           </Name>
         </IconButton>
-        <IconsContainer>
-          <IconButton>
-            <BsFillChatRightTextFill />
-          </IconButton>
-          <IconButton>
-            <FiMoreVertical />
-          </IconButton>
-        </IconsContainer>
       </Header>
       {/* <Search>
         <IconButton>
