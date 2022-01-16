@@ -42,10 +42,10 @@ function Sidebar() {
               auth.signOut();
             }}
           />
+        </IconButton>
           <Name>
               {user.email.split("@gmail.com")}
           </Name>
-        </IconButton>
       </Header>
       {/* <Search>
         <IconButton>
