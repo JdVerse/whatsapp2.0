@@ -53,7 +53,7 @@ const Conteiner = styled.div`
   display: flex;
 `;
 const Optional = styled.div`
-   @media (max-width: 500px) {
+   @media (max-width: 784px) {
     display:none;
   }
 `;

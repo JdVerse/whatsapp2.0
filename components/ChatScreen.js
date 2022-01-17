@@ -8,6 +8,7 @@ import { BsEmojiLaughing } from "react-icons/bs";
 import { BiArrowBack } from "react-icons/bi";
 import { auth, db } from "../firebase";
 import { useEffect, useState, useRef } from "react";
+import InputEmoji from 'react-input-emoji'
 import {
   useCollection,
   useCollectionData,
@@ -17,6 +18,7 @@ import MyMessage from "./Message";
 import getRecipientEmail from "../utils/getRecipientEmail";
 import TimeAgo from "timeago-react";
 function ChatScreen({ chat, messages }) {
+  const [ text, setText ] = useState('')
   const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
   const endOfMessage = useRef(null);
@@ -36,6 +38,22 @@ function ChatScreen({ chat, messages }) {
       .collection("users")
       .where("email", "==", getRecipientEmail(chat.users, user))
   );
+  const  handleOnEnter =()=> {
+    db.collection("users").doc(user.uid).set(
+      {
+        lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+    db.collection("chats").doc(router.query.id).collection("messages").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      message: input,
+      user: user.email,
+      photoURL: user.photoURL,
+    });
+    setInput("");
+    ScrollToBottom();
+  }
   const showMessages = () => {
     if (messageSnapShot) {
       return messageSnapShot.docs.map((message) => (
@@ -123,11 +141,14 @@ function ChatScreen({ chat, messages }) {
         <EndOfMessage ref={endOfMessage} />
       </MessageContainer>
       <InputContainer>
-        <IconButton>
-          <BsEmojiLaughing />
-        </IconButton>
-        <input value={input} onChange={(e) => setInput(e.target.value)} />
-        <Mybutton hidden type="submit" onClick={submit} disable={!input} />
+      <InputEmoji
+          value={input}
+          onChange={setInput}
+          cleanOnEnter
+          onEnter={handleOnEnter}
+          placeholder="Type a message"
+        />
+        <Mybutton type="submit" onClick={submit} disable={input} >Send</Mybutton>
       </InputContainer>
     </Container>
   );
@@ -135,9 +156,21 @@ function ChatScreen({ chat, messages }) {
 
 export default ChatScreen;
 const Container = styled.div``;
-const Mybutton = styled.button``;
+const Mybutton = styled.button`
+  @media (max-width: 784px) {
+    display:block;
+    outline:none;
+    border:none;
+    padding:5px;
+    margin-right:15px;
+    border-radius:5px;
+  }
+  @media (min-width: 784px) {
+    display:none; 
+  }
+`;
 const Back = styled.div`
-  @media (min-width: 500px) {
+  @media (min-width: 784px) {
     display:none;
   }
 position:absolute;
@@ -201,11 +234,18 @@ position:sticky;
 bottom:0;
 background-color:white;
 z-index:100;
+@media (max-width: 784px){
+  width:90vw;
+  position:absolute;
+  margin-bottom:60px;
+  margin-left:30px;
+  border-radius:15px
+}
 >input{
     border:none;
     outline:0;
     border-radius:10px;
-    flex:1;
+    flex:.90;
     align-items:center;
     padding:5px;
     margin-left:15px;
